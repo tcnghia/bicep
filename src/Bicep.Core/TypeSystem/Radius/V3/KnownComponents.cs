@@ -327,6 +327,36 @@ In this example the `web` port documents that the container is listening on port
 
         public static ComponentData MakeRedis()
         {
+            var k8sResourceType = new ObjectType(
+                "k8sResource",
+                validationFlags: TypeSymbolValidationFlags.WarnOnTypeMismatch,
+                properties: new[]
+                {
+                    new TypeProperty("kind", LanguageConstants.String, TypePropertyFlags.None),
+                    new TypeProperty("name", LanguageConstants.String, TypePropertyFlags.None),
+                    new TypeProperty("namespace", LanguageConstants.String, TypePropertyFlags.None),
+                },
+                additionalPropertiesType: LanguageConstants.Any,
+                additionalPropertiesFlags: TypePropertyFlags.None);
+            var computedValueType = new ObjectType(
+                "computedValue",
+                validationFlags: TypeSymbolValidationFlags.WarnOnTypeMismatch,
+                properties: new[]
+                {
+                    new TypeProperty("expr", LanguageConstants.String, TypePropertyFlags.None),
+                    new TypeProperty("secret", LanguageConstants.Bool, TypePropertyFlags.None),
+                },
+                additionalPropertiesType: LanguageConstants.Any,
+                additionalPropertiesFlags: TypePropertyFlags.None);
+            var computedValuesType = new ObjectType(
+                "computedValues",
+                validationFlags: TypeSymbolValidationFlags.WarnOnTypeMismatch,
+                properties: new[]
+                {
+                    new TypeProperty("when", LanguageConstants.String, TypePropertyFlags.None),
+                },
+                additionalPropertiesType: computedValueType,
+                additionalPropertiesFlags: TypePropertyFlags.None);
             return new ComponentData()
             {
                 Type = new ThreePartType("redislabs.com", "Redis", RadiusResources.CategoryComponent),
@@ -335,6 +365,8 @@ In this example the `web` port documents that the container is listening on port
                 {
                     new TypeProperty("managed", LanguageConstants.Bool, TypePropertyFlags.None),
                     new TypeProperty("resource", LanguageConstants.String, TypePropertyFlags.None),
+                    new TypeProperty("k8sResources", new TypedArrayType(k8sResourceType, TypeSymbolValidationFlags.Default)),
+                    new TypeProperty("provides", computedValuesType),
                 },
             };
         }
