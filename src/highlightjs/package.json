@@ -10,7 +10,7 @@
     "@typescript-eslint/parser": "^4.29.3",
     "eslint": "^7.32.0",
     "eslint-plugin-header": "^3.1.1",
-    "eslint-plugin-jest": "^24.4.0",
+    "eslint-plugin-jest": "^26.1.2",
     "highlight.js": "^11.2.0",
     "jest": "^27.0.6",
     "ts-jest": "^27.0.5",
